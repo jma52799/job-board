@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { SearchContext } from "@/contexts/search-context-provider";
 import { JobsContext } from "@/contexts/jobs-context-provider";
+import { BookmarkContext } from "@/contexts/bookmark-context-provider";
 import { useQuery } from "@tanstack/react-query";
 import prisma from "@/lib/db";
 
@@ -28,16 +29,28 @@ export function useJobsContext() {
     return context;
 }
 
+export function useBookmarkContext() {
+    const context = useContext(BookmarkContext);
+
+    if (!context) {
+        throw new Error(
+            "useBookmarkContext must be used within a BookmarkContextProvider"
+        )
+    }
+
+    return context;
+}
+
 //-----------Get Job Items-----------
 export async function fetchJobs(searchQuery: string) { //: Promise<Job[]>
     const jobs = await prisma.job.findMany({
         where: {
             title: {
-                contains: searchQuery
+                contains: searchQuery,
             }
         },
     });
-
+    console.log("Fetched job", jobs);
     return jobs;
 }
 

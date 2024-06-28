@@ -9,7 +9,9 @@ export default function SearchForm() {
   return (
     <form
       className="flex items-center rounded-full"
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={
+        (e) => e.preventDefault()
+      }
       action="#"
     >
       <input 

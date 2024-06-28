@@ -11,4 +11,4 @@ type USState =
   | 'Virginia' | 'Washington' | 'West Virginia' | 'Wisconsin' | 'Wyoming';
 
 
-export type SortBy = 'relevant' | 'daysAgo' | 'remote' | 'onsite' | 'internship' | 'full-time' | 'part-time' | USState;
+export type SortBy = 'relevant' | 'recent' | 'daysAgo' | 'remote' | 'onsite' | 'internship' | 'full-time' | 'part-time' | USState;

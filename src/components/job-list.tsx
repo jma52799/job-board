@@ -1,5 +1,7 @@
+"use client";
+
 import JobListItem from "./job-list-item"
-import { useJobsContext, useSearchContext, useSearchQuery  } from "@/lib/hooks";
+import { useJobsContext } from "@/lib/hooks";
 
 export default function JobList() {
   const { jobs, isLoading, selectedJobId, handleChangeSelectedJobId  } = useJobsContext();
@@ -19,6 +21,8 @@ export default function JobList() {
 }
 
 /*
+*/
+/*
 export default function JobList() {
   return (
     <ul className="flex flex-col w-full h-[532px] overflow-y-scroll">
@@ -32,27 +36,4 @@ export default function JobList() {
     </ul>
   )
 }
-/*
-
-<JobListItem />
-<JobListItem />
-<JobListItem />
-<JobListItem />
-<JobListItem />
-<JobListItem />
-<JobListItem />
-
-
-
-jobs.map((job) => (
-  <button
-  >
-
-  </button>
-
-  <JobListItem 
-    key={job.id} 
-    job={job} 
-  />
-))
 */

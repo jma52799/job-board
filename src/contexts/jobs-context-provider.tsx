@@ -15,8 +15,11 @@ type TJobsContext = {
     numberOfJobs: number;
     selectedJob: Job | undefined;
     selectedJobId: string | null;
+    sortBy: SortBy[];
+    sideSortBy: "relevant" | "recent";
     handleChangeSelectedJobId: (id: Job['id']) => void;
     handleChangeSortBy: (value: SortBy) => void;
+    handleChangeSideSortBy: (value: "relevant" | "recent") => void;
 }
 
 export const JobsContext = createContext<TJobsContext | null>(null);
@@ -29,6 +32,7 @@ export default function JobsContextProvider({
     const { jobs, isLoading } = useSearchQuery(debouncedSearchQuery);
     const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
     const [sortBy, setSortBy] = useState<SortBy[]>(["relevant"]);
+    const [sideSortBy, setSideSortBy] = useState<"relevant" | "recent">("relevant");
 
     //derived state
     const selectedJob = jobs?.find((job) => job.id === selectedJobId);
@@ -47,6 +51,11 @@ export default function JobsContextProvider({
         setSortBy(newSortBy);
     }, [sortBy]);
 
+    const handleChangeSideSortBy = useCallback((value: "relevant" | "recent") => {
+        setSideSortBy(value);
+        handleChangeSortBy(value);
+    }, [handleChangeSortBy]);
+
     return (
         <JobsContext.Provider
             value={{
@@ -55,8 +64,11 @@ export default function JobsContextProvider({
                 numberOfJobs,
                 selectedJob,
                 selectedJobId,
+                sortBy,
+                sideSortBy,
                 handleChangeSelectedJobId,
                 handleChangeSortBy,
+                handleChangeSideSortBy,
             }}
         >
             {children}
