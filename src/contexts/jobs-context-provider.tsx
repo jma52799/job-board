@@ -35,7 +35,7 @@ export default function JobsContextProvider({
     const [sideSortBy, setSideSortBy] = useState<"relevant" | "recent">("relevant");
 
     //derived state
-    const selectedJob = jobs?.find((job) => job.id === selectedJobId);
+    const selectedJob: Job | undefined = jobs?.find((job) => job.id === selectedJobId);
     const numberOfJobs = jobs?.length || 0;
 
     //event handler

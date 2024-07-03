@@ -4,19 +4,19 @@ import { Job } from "@prisma/client";
 import { BookmarkFilledIcon } from "@radix-ui/react-icons";
 import { useBookmarkContext } from "@/lib/hooks";
 
-export default function BookmarkIcon({ jobId }: { jobId: Job['id'] }) {
-    const { bookmarkedId, handleToggleBookmarkedId } = useBookmarkContext();
+export default function BookmarkIcon({ jobId }: { jobId: Job['id'] | any }) {
+    const { bookmarkedIds, handleToggleBookmarkedIds } = useBookmarkContext();
 
     return (
         <button 
             onClick={(e) => {
-                handleToggleBookmarkedId(jobId);
+                handleToggleBookmarkedIds(jobId);
                 e.preventDefault();
                 e.stopPropagation();
             }}
         >
             <BookmarkFilledIcon 
-                className={bookmarkedId?.includes(jobId) ? "filled" : ""}
+                className={bookmarkedIds?.includes(jobId) ? "filled" : ""}
             />
         </button>
     )

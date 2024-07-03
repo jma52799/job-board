@@ -2,8 +2,10 @@ import { useContext } from "react";
 import { SearchContext } from "@/contexts/search-context-provider";
 import { JobsContext } from "@/contexts/jobs-context-provider";
 import { BookmarkContext } from "@/contexts/bookmark-context-provider";
+import { UserInfoContext } from "@/contexts/userInfo-context-provider";
 import { useQuery } from "@tanstack/react-query";
 import prisma from "@/lib/db";
+import { Job } from "@prisma/client";
 
 export function useSearchContext() {
     const context = useContext(SearchContext);
@@ -41,6 +43,18 @@ export function useBookmarkContext() {
     return context;
 }
 
+export function useUserInfoContext() {
+    const context = useContext(UserInfoContext);
+
+    if (!context) {
+        throw new Error(
+            "useUserInfoContext must be used within a UserInfoContextProvider"
+        )
+    }
+
+    return context;
+}
+
 //-----------Get Job Items-----------
 export async function fetchJobs(searchQuery: string) { //: Promise<Job[]>
     const jobs = await prisma.job.findMany({
@@ -69,3 +83,8 @@ export function useSearchQuery(searchQuery: string) {
     }
 }
 
+//-----------Get Bookmark Items-----------
+export async function useBookmarkedJobItems() { 
+    const bookmarks = await prisma.bookmarked.findMany();
+    return bookmarks;
+}

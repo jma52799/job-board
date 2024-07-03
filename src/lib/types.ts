@@ -1,3 +1,5 @@
+import { UserFile } from "@prisma/client";
+
 type USState = 
   | 'Alabama' | 'Alaska' | 'Arizona' | 'Arkansas' | 'California'
   | 'Colorado' | 'Connecticut' | 'Delaware' | 'Florida' | 'Georgia'
@@ -12,3 +14,8 @@ type USState =
 
 
 export type SortBy = 'relevant' | 'recent' | 'daysAgo' | 'remote' | 'onsite' | 'internship' | 'full-time' | 'part-time' | USState;
+
+export type UserExperienceEssentials = Omit<
+  UserFile, 
+  "id" | "createdAt" | "updated" | "created"
+>

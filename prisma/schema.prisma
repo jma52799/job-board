@@ -11,15 +11,46 @@ datasource db {
 }
 
 model Job {
-  id      String    @id @default(cuid())
-  applyUrl     String
-  title   String
-  company String
-  city    String
-  state   String
-  country String
+  id          String    @id @default(cuid())
+  applyUrl    String
+  title       String
+  company     String
+  city        String
+  state       String
+  country     String
   deadline    DateTime
   daysAgo     String
+  created     DateTime   @default(now())
+  updated     DateTime   @updatedAt
+  bookmarks   Bookmarked[]
+}
+
+model Bookmarked {
+  id        String   @id @default(cuid())
+  jobId     String
+  job       Job      @relation(fields: [jobId], references: [id])
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+
+model UserFile {
+  id      String    @id @default(cuid())
+  experience String
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String @unique
   created DateTime @default(now())
   updated DateTime @updatedAt
+}
+  
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  hashedPassword String
+  hasAccess      Boolean  @default(false)
+  bookmarks      Bookmarked[]
+  userFile       UserFile?
+  updatedAt      DateTime @updatedAt
+  createdAt      DateTime @default(now())
 }

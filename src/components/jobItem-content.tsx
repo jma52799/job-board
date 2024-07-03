@@ -1,15 +1,16 @@
+"use client";
+
 import { CiBookmark } from "react-icons/ci";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { PiMoneyThin } from "react-icons/pi";
 import { CiLocationOn } from "react-icons/ci";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+import BookmarkIcon from "./bookmark-icon";
+import { useJobsContext } from "@/lib/hooks";
 
 
 export default function JobItemContent() {
+  const { selectedJob } = useJobsContext();
+
   return (
     <div className="flex flex-col py-10 px-14 overflow-y-scroll overflow-x-hidden">
         <div className="flex items-center space-x-4">
@@ -23,10 +24,10 @@ export default function JobItemContent() {
         <p className="text-sm mt-2">Posted 1 week ago. Apply by December 12, 2024 at 10 PM</p>
 
         <div className="flex space-x-3 h-[40px] mt-4">
-          <button className="flex items-center gap-x-1 text-black px-3 rounded border border-solid border-black">
-            <CiBookmark />
+          <div className="flex items-center gap-x-1 text-black px-3 rounded border border-solid border-black">
+            <BookmarkIcon jobId={selectedJob?.id} />
             Save
-          </button>
+          </div>
           <button className="text-white bg-black px-3 rounded border border-solid border-black">Apply</button>
         </div>
 
@@ -116,5 +117,16 @@ export default function JobItemContent() {
         </button>
 
     </div>
+
   )
 }
+
+/*
+    <div className="flex flex-col w-[710px] h-full items-center justify-center"> 
+      <p className="text-lg text-black/50 inline-block">What are you looking for?</p>
+      <p className="text-base text-wrap">Start by searching for any keywords you are interested in</p>
+    </div>
+*/
+
+/*
+*/

@@ -6,7 +6,10 @@ import Footer from "@/components/footer";
 import Header from "@/components/header";
 import SearchContextProvider from "@/contexts/search-context-provider";
 import JobsContextProvider from "@/contexts/jobs-context-provider";
+import BookmarkContextProvider from "@/contexts/bookmark-context-provider";
 import Providers from "./providers";
+import { Toaster } from "@/components/ui/sonner";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,11 +30,15 @@ export default async function RootLayout({
           <Header />
             <Providers>
               <SearchContextProvider>
-                <JobsContextProvider>{children}</JobsContextProvider>   
+                <JobsContextProvider>
+                  <BookmarkContextProvider>{children}</BookmarkContextProvider>
+                </JobsContextProvider>   
               </SearchContextProvider>
             </Providers>
           <Footer />
         </div>
+
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );

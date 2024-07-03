@@ -1,29 +1,67 @@
+"use client";
+
 import { Job } from "@prisma/client";
 import { createContext, useCallback, useMemo, useState } from "react";
+import prisma from "@/lib/db";
+import { toggleBookmarkedIds } from "@/lib/bookmark-utils";
 
 type TBookmarkContext = {
-    bookmarkedId: Job['id'][] | null;
-    handleToggleBookmarkedId: (id: Job['id']) => void;
+    bookmarkedIds: Job['id'][] | null;
+    handleToggleBookmarkedIds: (id: Job['id']) => void;
 }
 
 export const BookmarkContext = createContext<TBookmarkContext | null>(null);
 
 export default function BookmarkContextProvider({ children }: { children: React.ReactNode }) { 
     //state
-    const [bookmarkedId, setBookmarkedId] = useState<Job['id'][] | null>(null);
+    const [bookmarkedIds, setBookmarkedIds] = useState<Job['id'][] | null>(null);
+
 
     //event handler
-    const handleToggleBookmarkedId = (id: Job['id']) => {
-        bookmarkedId?.includes(id)
-        ? setBookmarkedId(bookmarkedId.filter((item) => item !== id))
-        : setBookmarkedId([...(bookmarkedId || []), id])
-    };
-
+    /*
+   const handleToggleBookmarkedIds = async (id: Job['id']) => {
+        if (bookmarkedIds?.includes(id)) {
+            await deleteBookmark(id);
+            setBookmarkedIds(bookmarkedIds.filter((item) => item !== id));
+        } else {
+            createBookmark(id);
+            setBookmarkedIds([...(bookmarkedIds || []), id]);
+        }
+   }
+    */
+   /*
+    const handleToggleBookmarkedIds = async (id: Job['id']) => {
+        const updatedBookmarkedIds = await toggleBookmarkedIds(bookmarkedIds, id);
+        setBookmarkedIds(updatedBookmarkedIds);
+    }
+    */
+    const handleToggleBookmarkedIds = async (id: Job['id']) => {
+        if (bookmarkedIds?.includes(id)) {
+            await fetch('/api/bookmarks/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }),
+            });
+            setBookmarkedIds(bookmarkedIds.filter((item) => item !== id));
+        } else {
+            await fetch('/api/bookmarks/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }),
+            });
+            setBookmarkedIds([...(bookmarkedIds || []), id]);
+        }
+    }
+    
     return (
         <BookmarkContext.Provider
             value={{
-                bookmarkedId,
-                handleToggleBookmarkedId,
+                bookmarkedIds,
+                handleToggleBookmarkedIds,
             }}
         >
             {children}
