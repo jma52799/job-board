@@ -6,6 +6,9 @@ import { PiMoneyThin } from "react-icons/pi";
 import { CiLocationOn } from "react-icons/ci";
 import BookmarkIcon from "./bookmark-icon";
 import { useJobsContext } from "@/lib/hooks";
+import AuthDialog from "./auth-dialog";
+import { Button } from "./ui/button";
+import { useState } from "react";
 
 
 export default function JobItemContent() {
@@ -24,7 +27,9 @@ export default function JobItemContent() {
         <p className="text-sm mt-2">Posted 1 week ago. Apply by December 12, 2024 at 10 PM</p>
 
         <div className="flex space-x-3 h-[40px] mt-4">
-          <div className="flex items-center gap-x-1 text-black px-3 rounded border border-solid border-black">
+          <div 
+            className="flex items-center gap-x-1 text-black px-3 rounded border border-solid border-black hover:cursor-pointer"
+          >
             <BookmarkIcon jobId={selectedJob?.id} />
             Save
           </div>
@@ -121,12 +126,11 @@ export default function JobItemContent() {
   )
 }
 
-/*
-    <div className="flex flex-col w-[710px] h-full items-center justify-center"> 
-      <p className="text-lg text-black/50 inline-block">What are you looking for?</p>
-      <p className="text-base text-wrap">Start by searching for any keywords you are interested in</p>
-    </div>
-*/
+
 
 /*
+          <div className="flex items-center gap-x-1 text-black px-3 rounded border border-solid border-black">
+            <BookmarkIcon jobId={selectedJob?.id} />
+            Save
+          </div>
 */

@@ -3,11 +3,12 @@ import prisma from '@/lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'DELETE') {
-        const { id } = req.body;
+        const { jobId, userId } = req.body;
         try {
-            const bookmark = await prisma.bookmarked.delete({
+            const bookmark = await prisma.bookmarked.deleteMany({
                 where: {
-                    id,
+                    jobId: jobId,
+                    userId: userId,
                 },
             });
             res.status(200).json(bookmark);
