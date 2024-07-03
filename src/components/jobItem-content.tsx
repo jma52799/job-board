@@ -9,6 +9,7 @@ import { useJobsContext } from "@/lib/hooks";
 import AuthDialog from "./auth-dialog";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import JobDetailsBookmark from "./jobDetails-bookmark";
 
 
 export default function JobItemContent() {
@@ -27,12 +28,7 @@ export default function JobItemContent() {
         <p className="text-sm mt-2">Posted 1 week ago. Apply by December 12, 2024 at 10 PM</p>
 
         <div className="flex space-x-3 h-[40px] mt-4">
-          <div 
-            className="flex items-center gap-x-1 text-black px-3 rounded border border-solid border-black hover:cursor-pointer"
-          >
-            <BookmarkIcon jobId={selectedJob?.id} />
-            Save
-          </div>
+          <JobDetailsBookmark jobId={selectedJob?.id} />
           <button className="text-white bg-black px-3 rounded border border-solid border-black">Apply</button>
         </div>
 

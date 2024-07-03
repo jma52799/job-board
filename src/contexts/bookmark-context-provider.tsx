@@ -18,11 +18,7 @@ export default function BookmarkContextProvider({ children }: { children: React.
 
 
     //event handler
-    const handleToggleBookmarkedIds = async (id: Job['id'] | "") => {
-        if (id === "") {
-            return;
-        }
-
+    const handleToggleBookmarkedIds = async (id: Job['id']) => {
         if (bookmarkedIds?.includes(id)) {
             await fetch('/api/bookmarks/delete', {
                 method: 'DELETE',
