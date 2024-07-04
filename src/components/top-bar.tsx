@@ -9,3 +9,5 @@ export default function Topbar({children}: {children: React.ReactNode}) {
 }
 
 //rounded-t-lg
+
+//use w-[60%]

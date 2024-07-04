@@ -1,9 +1,22 @@
+import { cn } from "@/lib/utils"
 
-export default function Container({children}: {children: React.ReactNode}) {
+type ContainerProps = {
+  children: React.ReactNode,
+  className?: string
+}
+
+export default function Container({children, className}: ContainerProps) {
   return (
-    <div className="flex w-full h-[630px] bg-[#f4f4f5] rounded-lg overflow-x-hidden shadow-md">{children}</div>
+    <div 
+      className={cn(
+        "flex w-full h-[630px] bg-[#f4f4f5] rounded-lg overflow-x-hidden shadow-md",
+        className
+      )}
+    >
+      {children}
+    </div>
   )
 }
 
 
-//rounded-b-lg
+  

@@ -1,14 +1,14 @@
+
 import ResumeUpload from "@/components/resume-upload";
 import LoggingControls from "@/components/logging-controls";
 import UserExperience from "@/components/user-experience";
 import UserInfoContextProvider from "@/contexts/userInfo-context-provider";
 import prisma from "@/lib/db";
-import Prisma from "@prisma/client";
 
 
 export default async function Account() {
   const experience = await prisma.userFile.findMany();
-
+  
   return (
     <UserInfoContextProvider data={experience}>
         <main className="flex flex-col w-full items-center mt-16">
