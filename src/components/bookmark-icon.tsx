@@ -5,13 +5,14 @@ import { BookmarkFilledIcon } from "@radix-ui/react-icons";
 import { useBookmarkContext } from "@/lib/hooks";
 
 export default function BookmarkIcon({ jobId }: { jobId: Job['id'] | any }) {
-    const { bookmarkedIds, handleToggleBookmarkedIds } = useBookmarkContext();
+    //const { bookmarkedIds, handleToggleBookmarkedIds } = useBookmarkContext();
+    const { bookmarkedIds } = useBookmarkContext();
 
     return (
 
             <button 
                 onClick={(e) => {
-                    handleToggleBookmarkedIds(jobId);
+                    //handleToggleBookmarkedIds(jobId);
                     e.preventDefault();
                     e.stopPropagation();
                 }}

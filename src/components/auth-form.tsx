@@ -6,17 +6,21 @@ import { Label } from "./ui/label";
 import AuthFormBtn from "./auth-form-btn";
 import { useFormState } from "react-dom";
 import { Button } from "./ui/button";
+import { logIn, signUp } from "@/actions/actions";
+
 
 type AuthFormProps = {
   type: "logIn" | "signUp";
 };
 
 export default function AuthForm({ type }: AuthFormProps) {
-  //const [signUpError, dispatchSignUp] = useFormState(signUp, undefined);
-  //const [logInError, dispatchLogIn] = useFormState(logIn, undefined);
+
 
   return (
-    <form className="flex flex-col">
+    <form 
+      className="flex flex-col"
+      action={type === 'logIn' ? logIn : signUp}
+    >
       <div className="space-y-1">
         <Label htmlFor="email">Email</Label>
         <Input id="email" name="email" type="email" required maxLength={100} />

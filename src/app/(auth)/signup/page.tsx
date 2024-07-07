@@ -2,8 +2,15 @@ import AuthForm from "@/components/auth-form";
 import Container from "@/components/container";
 import Link from "next/link";
 import Image from 'next/image'
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-export default function Page() {
+export default async function Page() {
+  const session = await auth();
+  if (session?.user) {
+    redirect("/account");
+  }
+
   return (
     <Container className="mt-16">
       <div className="flex-1 relative bg-black/50 overflow-hidden">
