@@ -5,6 +5,8 @@ import { auth } from "./auth";
 import { Bookmarked, User } from "@prisma/client";
 import prisma from "./db";
 
+
+
 export async function checkAuth() {
     const session = await auth();
     if (!session?.user) {
@@ -12,4 +14,4 @@ export async function checkAuth() {
     }
   
     return session;
-  }
+}

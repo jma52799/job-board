@@ -1,6 +1,6 @@
 "use client";
 
-import { logOut } from "@/actions/actions";
+import { logOut, destroyAccount } from "@/actions/actions";
 import { Button } from "@/components/ui/button";
 
 export default function LoggingControls() {
@@ -14,7 +14,7 @@ export default function LoggingControls() {
             </Button>   
             <Button 
                 variant="destructive"
-                
+                onClick={async () => await destroyAccount()}
             >
                 Delete Account
             </Button>

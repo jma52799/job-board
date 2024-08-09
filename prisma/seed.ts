@@ -10,26 +10,26 @@ async function main() {
   const job1 = await prisma.job.create({
     data: {
       applyUrl: "https://amazon.com/apply/1",
+      logo: "A",
       title: "Frontend Developer",
       company: "Amazon",
-      city: "Irvine",
-      state: "CA",
-      country: "US",
-      deadline: new Date("2024-03-01T00:00:00.000Z"),
+      location: "Irvine, CA",
       daysAgo: "4",
+      salary: "$160,000",
+      description: "Software engineer",
     },
   });
 
   const job2 = await prisma.job.create({
     data: {
       applyUrl: "https://amazon.com/apply/2",
+      logo: "B",
       title: "AI/ML Engineer",
-      company: "Amazon",
-      city: "Irvine",
-      state: "CA",
-      country: "US",
-      deadline: new Date("2024-03-01T00:00:00.000Z"),
+      company: "Boeing",
+      location: "Sacramento, CA",
       daysAgo: "4",
+      salary: "$170,000",
+      description: "AI/ML engineer",
     },
   });
 

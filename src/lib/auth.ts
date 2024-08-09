@@ -1,11 +1,10 @@
 import NextAuth, { NextAuthConfig } from "next-auth";
-
 import Credentials from "next-auth/providers/credentials";
 import prisma from "@/lib/db";
 import bycrypt from "bcrypt";
 
 
-export const config  = {
+export const config = {
     pages: {
         signIn: "/login",
     },
@@ -51,20 +50,6 @@ export const config  = {
             if (!isLoggedIn && !isTryingToAccessAccount) {
                 return true;
             } 
-            /*
-            if (isLoggedIn && !isTryingToAccessApp) {
-                return Response.redirect(new URL("/", request.nextUrl));
-            }
-            */
-            /*
-            if (
-                isLoggedIn &&
-                (request.nextUrl.pathname.includes("/login") ||
-                 request.nextUrl.pathname.includes("/signup")) 
-            ) {
-                return Response.redirect(new URL("/account"));
-            }
-            */
 
             return false;
         },
@@ -86,3 +71,5 @@ export const config  = {
 } satisfies NextAuthConfig;
 
 export const { auth, signIn, signOut, handlers: {GET, POST}} = NextAuth(config);
+
+

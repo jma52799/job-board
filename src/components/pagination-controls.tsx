@@ -1,25 +1,39 @@
+"use client";
+
+import { useJobsContext } from "@/lib/hooks";
 import { MdNavigateNext } from "react-icons/md";
 import { MdNavigateBefore } from "react-icons/md";
+import Link from "next/link";
+
 export default function PaginationControls() {
+  const { page, totalCount } = useJobsContext();
+
+  const previousPath = page > 1 ? `?page=${page - 1}` : "";
+  const nextPath = totalCount > page * 7 ? `?page=${page + 1}` : "";
+
   return (
     <div className="flex flex-grow items-center justify-center space-x-4">
-      <PaginationButton>
+      <PaginationButton path={previousPath}>
         <MdNavigateBefore />
       </PaginationButton>
       <div className="py-1.5 px-2 rounded-full border border-solid border-black">
-        <p className="text-xs">1 / 1002</p>
+        <p className="text-xs">{page} / {Math.ceil(totalCount / 7)}</p>
       </div>
-      <PaginationButton>
+      <PaginationButton path={nextPath}>
         <MdNavigateNext />
       </PaginationButton>
     </div>
-  )
+  );
 }
 
-function PaginationButton({children}: {children: React.ReactNode}) {
-  return (
-    <button className="hover:bg-[#d0d5d8] py-1.5 px-2 rounded-full border border-solid border-black">
-      {children}
-    </button>
-  )
+function PaginationButton({ path, children }: { path: string, children: React.ReactNode }) {
+  if (path) {
+    return (
+      <Link href={path} className="hover:bg-[#d0d5d8] py-1.5 px-2 rounded-full border border-solid border-black">
+        {children}
+      </Link>
+    );
+  }
+  
+  return <div className="py-1.5 px-2 rounded-full border border-solid border-black opacity-50 cursor-not-allowed">{children}</div>
 }

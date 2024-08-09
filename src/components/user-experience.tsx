@@ -33,7 +33,7 @@ export default function UserExperience() {
               onClick={
                 async () => {
                   startTransition(async () => {
-                    await handleSaveExperience({experience})
+                    await handleSaveExperience();
                   })
                   toast.success("Saved!")
                 }

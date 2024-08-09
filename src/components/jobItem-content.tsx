@@ -15,12 +15,22 @@ import JobDetailsBookmark from "./jobDetails-bookmark";
 export default function JobItemContent() {
   const { selectedJob } = useJobsContext();
 
+  if (!selectedJob) {
+    return (
+      <div className="flex items-center justify-center h-full w-[710px]">
+        <p className="text-center text-gray-500 text-md font-medium">
+          Click on any job to the left to view its content
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col py-10 px-14 overflow-y-scroll overflow-x-hidden">
+    <div className="flex flex-col py-10 px-14 overflow-y-scroll overflow-x-hidden no-scrollbar">
         <div className="flex items-center space-x-4">
-          <div className="flex items-center justify-center h-[60px] w-[60px] bg-[#a1a1aa] rounded">FT</div>
+          <div className="flex items-center justify-center h-[60px] w-[60px] bg-[#a1a1aa] rounded">{selectedJob.logo}</div>
           <div className="leading-6">
-            <h1 className="text-2xl font-bold">Frontend Developer</h1>
+            <h1 className="text-2xl font-bold">{selectedJob.title}</h1>
             <p className="text-sm">Internet & Software</p>
           </div>
         </div>

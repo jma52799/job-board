@@ -13,13 +13,13 @@ datasource db {
 model Job {
   id          String    @id @default(cuid())
   applyUrl    String
+  logo        String
   title       String
   company     String
-  city        String
-  state       String
-  country     String
-  deadline    DateTime
+  location    String
   daysAgo     String
+  salary      String
+  description String
   created     DateTime   @default(now())
   updated     DateTime   @updatedAt
   bookmarks   Bookmarked[]
@@ -28,9 +28,9 @@ model Job {
 model Bookmarked {
   id        String   @id @default(cuid())
   jobId     String
-  job       Job      @relation(fields: [jobId], references: [id])
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
   userId      String
-  user        User         @relation(fields: [userId], references: [id])
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 }
 

@@ -56,6 +56,7 @@ export function useUserInfoContext() {
 }
 
 //-----------Get Job Items-----------
+/*
 export async function fetchJobs(searchQuery: string) { //: Promise<Job[]>
     const jobs = await prisma.job.findMany({
         where: {
@@ -82,6 +83,7 @@ export function useSearchQuery(searchQuery: string) {
         isLoading,
     }
 }
+*/
 
 //-----------Get Bookmark Items-----------
 export async function useBookmarkedJobItems() { 

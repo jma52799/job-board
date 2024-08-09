@@ -8,7 +8,7 @@ import { saveExperience } from "@/actions/actions";
 type TUserInfoContext = {
     experience: UserFile['experience']
     handleChangeExperience: (newExperience: UserFile['experience']) => void
-    handleSaveExperience: (newExperience: UserExperienceEssentials) => void
+    handleSaveExperience: () => void
 }
 
 export const UserInfoContext = createContext<TUserInfoContext | null>(null)
@@ -22,8 +22,8 @@ export default function UserInfoContextProvider({children, data}: {children: Rea
     }
 
     //actions
-    const handleSaveExperience = async (newExperience: UserExperienceEssentials) => {
-        await saveExperience(newExperience);
+    const handleSaveExperience = async () => {
+        await saveExperience(experience);
     }
 
     return (

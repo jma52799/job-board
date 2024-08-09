@@ -3,11 +3,9 @@
 import { Job } from "@prisma/client";
 import { BookmarkFilledIcon } from "@radix-ui/react-icons";
 import { useBookmarkContext } from "@/lib/hooks";
-import { useState } from "react";
-import AuthDialog from "./auth-dialog";
 
-export default function BookmarkIcon({ jobId }: { jobId: Job['id'] | any }) {
-    const { bookmarkedIds, handleToggleBookmarkedIds, showAuthDialog, isLogin, closeAuthDialog, toggleDialog } = useBookmarkContext();
+export default function SavedPageBookmarkIcon({ jobId }: { jobId: Job['id'] | any }) {
+    const { deleteBookmarkedId, bookmarkedIds } = useBookmarkContext();
 
     return (
         <div>
@@ -15,16 +13,13 @@ export default function BookmarkIcon({ jobId }: { jobId: Job['id'] | any }) {
                 onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    handleToggleBookmarkedIds(jobId);
+                    deleteBookmarkedId(jobId);
                 }}
             >
                 <BookmarkFilledIcon 
                     className={bookmarkedIds?.includes(jobId) ? "filled" : ""}
                 />
             </button>
-            {showAuthDialog && 
-                <AuthDialog closeDialog={closeAuthDialog} isLogin={isLogin} toggleDialog={toggleDialog} />
-            }
         </div>
     )
 }

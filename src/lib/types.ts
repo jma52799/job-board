@@ -1,6 +1,6 @@
 import { UserFile } from "@prisma/client";
 
-type USState = 
+export type USState = 
   | 'Alabama' | 'Alaska' | 'Arizona' | 'Arkansas' | 'California'
   | 'Colorado' | 'Connecticut' | 'Delaware' | 'Florida' | 'Georgia'
   | 'Hawaii' | 'Idaho' | 'Illinois' | 'Indiana' | 'Iowa' | 'Kansas'

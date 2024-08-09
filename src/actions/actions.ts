@@ -7,20 +7,37 @@ import { signIn, signOut } from "@/lib/auth";
 import bycrypt from "bcrypt";
 import { redirect } from "next/navigation";
 import { Job, Prisma } from "@prisma/client";
+import { auth } from "@/lib/auth";
 
 // --- user profile actions ---
-export async function saveExperience(newExperience: UserExperienceEssentials) {
-    const existingExperience = await prisma.userFile.findFirst();
+export async function saveExperience(experience: string) {
+    try {
+        const session = await auth();
+        if (!session) {
+            return;
+        }
 
-    if (existingExperience) {
-        await prisma.userFile.update({
-            where: { id: existingExperience.id },
-            data: newExperience,
+        const userId = session.user.id;
+
+        const existingExperience = await prisma.userFile.findFirst({
+            where: { userId },
         });
-    } else {
-        await prisma.userFile.create({
-            data: newExperience,
-        });
+    
+        if (existingExperience) {
+            await prisma.userFile.update({
+                where: { id: existingExperience.id },
+                data: { experience } ,
+            });
+        } else {
+            await prisma.userFile.create({
+                data: {
+                    experience,
+                    userId,
+                }
+            });
+        }
+    } catch (error: any) {
+        throw new Error(error.message);
     }
 
     revalidatePath("/account", "page");
@@ -66,25 +83,88 @@ export async function signUp(formData: FormData) {
 }
 
 export async function destroyAccount() {
-    //await prisma.user.deleteMany();
+    try {
+        const session = await auth();
+        if (!session) {
+            return;
+        }
+        const userId = session.user.id;
+
+        await prisma.user.delete({
+            where: { id: userId },
+        })
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
 }
 
 // --- bookmark actions ---
-/*
-export async function toggleBookmarkedIds(bookmarkedIds: Job['id'][] | null, id: Job['id']) {
-    if (bookmarkedIds?.includes(id)) {
-        await prisma.bookmarked.delete({
-            where: {
-                id,
-            }
-        });
-    } else {
-        await prisma.bookmarked.create({
-            data: {
-                jobId: id
-            }
-        });
+export async function addBookmark(jobId: Job['id'], userId: string) {
+    await prisma.bookmarked.create({
+        data: {
+            jobId,
+            userId,
+        },
+    });
+
+    revalidatePath("/saved", "page");
+}
+
+export async function deleteBookmark(jobId: Job['id'], userId: string) {
+    await prisma.bookmarked.deleteMany({
+        where: {
+            jobId,
+            userId,
+        },
+    });
+
+    revalidatePath("/saved", "page");
+}
+
+export async function fetchAuthenticatedUser() {
+    const session = await auth();
+    return session;
+}
+
+/* fetch jobs actions */
+export async function getJobs(searchQuery = '', page = 1, sortBy: "relevant" | "recent") {
+    const whereClause = searchQuery ? {
+        OR: [
+        { title: { contains: searchQuery, mode: "insensitive" } },
+        { description: { contains: searchQuery, mode: "insensitive" } },
+        ]
+    } : {};
+
+    // Default order by created date (when sortBy equals 'relevant' but no search query is provided)
+    let orderByClause: any = { created: "desc" };
+
+    // Sort by relevance if 'relevant' is the sortBy value and ONLY IF a search query is provided
+    if (searchQuery && sortBy === "relevant") {
+        orderByClause = {
+        _relevance: {
+            fields: ["title", "description"],
+            search: searchQuery
+        }
+        }
+    }
+
+    if (sortBy === "recent") {
+        orderByClause = {
+        created: "desc",
+        }
+    }
+
+    const jobs = await prisma.job.findMany({
+        where: whereClause,
+        orderBy: orderByClause,
+        take: 7,
+        skip: (page - 1) * 7,
+    });
+
+    const totalCount = await prisma.job.count({ where: whereClause });
+
+    return {
+        jobs,
+        totalCount,
     }
 }
-*/
-
