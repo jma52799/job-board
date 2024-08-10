@@ -141,10 +141,11 @@ export async function getJobs(searchQuery = '', page = 1, sortBy: "relevant" | "
     // Sort by relevance if 'relevant' is the sortBy value and ONLY IF a search query is provided
     if (searchQuery && sortBy === "relevant") {
         orderByClause = {
-        _relevance: {
-            fields: ["title", "description"],
-            search: searchQuery
-        }
+            _relevance: {
+                fields: ["title", "description"],
+                search: searchQuery,
+                sort: "desc",
+            }
         }
     }
 
