@@ -130,8 +130,8 @@ export async function fetchAuthenticatedUser() {
 export async function getJobs(searchQuery = '', page = 1, sortBy: "relevant" | "recent") {
     const whereClause = searchQuery ? {
         OR: [
-        { title: { contains: searchQuery, mode: "insensitive" } },
-        { description: { contains: searchQuery, mode: "insensitive" } },
+        { title: { contains: searchQuery } },
+        { description: { contains: searchQuery } },
         ]
     } : {};
 
