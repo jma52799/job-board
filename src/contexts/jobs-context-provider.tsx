@@ -58,8 +58,12 @@ export default function JobsContextProvider({
             setIsLoading(false);
         }
 
-        fetchJobs();
+        //fetchJobs();
     }, [searchQuery, page, sideSortBy]);
+
+    useEffect(() => {
+        fetchJobs();
+    }, [fetchJobs]); 
 
     const handleChangePage = (newPage: number) => {
         setPage(newPage);

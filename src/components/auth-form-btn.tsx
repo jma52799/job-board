@@ -13,7 +13,7 @@ export default function AuthFormBtn({ type }: AuthFormBtnProps) {
   const { pending } = useFormStatus();
 
   return (
-    <Button disabled={pending}>
+    <Button className="mt-6" disabled={pending}>
       {type === "logIn" ? "Log In" : "Sign Up"}
     </Button>
   );

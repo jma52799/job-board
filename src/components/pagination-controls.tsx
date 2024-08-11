@@ -35,5 +35,6 @@ function PaginationButton({ path, children }: { path: string, children: React.Re
     );
   }
   
-  return <div className="py-1.5 px-2 rounded-full border border-solid border-black opacity-50 cursor-not-allowed">{children}</div>
+  //return <div className="py-1.5 px-2 rounded-full border border-solid border-black opacity-50 cursor-not-allowed">{children}</div>
+  return <div />
 }

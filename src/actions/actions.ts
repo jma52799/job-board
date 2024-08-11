@@ -121,6 +121,20 @@ export async function deleteBookmark(jobId: Job['id'], userId: string) {
     revalidatePath("/saved", "page");
 }
 
+export async function fetchBookmarkedJobs(userId: string): Promise<Job[]> {
+    const bookmarks = await prisma.bookmarked.findMany({
+        where: {
+            userId,
+        },
+        include: {
+            job: true,
+        },
+    });
+
+    // Map to extract the full Job objects from the bookmarks
+    return bookmarks.map(bookmark => bookmark.job);
+}
+
 export async function fetchAuthenticatedUser() {
     const session = await auth();
     return session;

@@ -1,19 +1,16 @@
 "use client";
 
-import { CiBookmark } from "react-icons/ci";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { PiMoneyThin } from "react-icons/pi";
 import { CiLocationOn } from "react-icons/ci";
-import BookmarkIcon from "./bookmark-icon";
 import { useJobsContext } from "@/lib/hooks";
-import AuthDialog from "./auth-dialog";
-import { Button } from "./ui/button";
 import { useState } from "react";
 import JobDetailsBookmark from "./jobDetails-bookmark";
 
 
 export default function JobItemContent() {
   const { selectedJob } = useJobsContext();
+  const [isExpanded, setIsExpanded] = useState(false);
 
   if (!selectedJob) {
     return (
@@ -117,14 +114,23 @@ export default function JobItemContent() {
 
         <div className="mt-4 border-t border-solid border-black/15" />
 
-        <p className="mt-4 w-[566px] line-clamp-3">
+        <p className={`mt-4 w-[566px] ${!isExpanded ? "line-clamp-3" : ""}`}>
           ISAFE Enterprises is seeking a skilled and innovative Machine Learning Engineer to join our dynamic team. 
           The ideal candidate will be responsible for developing and deploying a website chatbot that enhances customer support 
           and facilitates document signing. Additionally, the candidate will integrate artificial intelligence tools into the 
           ISAFE Direct Platform to assist administrators in creating and disseminating online digital forms.
+          grate artificial intelligence tools into the 
+          ISAFE Direct Platform to assist administrators in creating and disseminating online digital forms.
+          grate artificial intelligence tools into the 
+          ISAFE Direct Platform to assist administrators in creating and disseminating online digital forms.
         </p>
-        <button className="self-start text-blue-700 mt-2">
-          More
+        <button 
+          className="self-start text-blue-700 mt-2"
+          onClick={() => {
+            setIsExpanded(!isExpanded);
+          }}
+        >
+          {isExpanded ? "Show less" : "Show more"}
         </button>
 
     </div>

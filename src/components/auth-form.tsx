@@ -3,18 +3,15 @@
 //import { logIn, signUp } from "@/actions/actions";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import AuthFormBtn from "./auth-form-btn";
-import { useFormState } from "react-dom";
 import { Button } from "./ui/button";
 import { logIn, signUp } from "@/actions/actions";
-
+import AuthFormBtn from './auth-form-btn';
 
 type AuthFormProps = {
   type: "logIn" | "signUp";
 };
 
 export default function AuthForm({ type }: AuthFormProps) {
-
 
   return (
     <form 
@@ -37,7 +34,7 @@ export default function AuthForm({ type }: AuthFormProps) {
         />
       </div>
 
-      <Button className="mt-6">{type === "logIn" ? "Log In" : "Sign Up"}</Button>
+      <AuthFormBtn type={type}></AuthFormBtn>
     </form>
   );
 }

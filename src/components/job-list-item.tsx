@@ -32,7 +32,7 @@ export default function JobListItem({job}: {job: Job}) {
           </div>
           <div className="ml-auto mr-4 flex flex-col gap-y-2">
               <BookmarkIcon jobId={job.id} />
-              <p className="text-xs">{job.daysAgo}</p>
+              <p className="text-xs">{job.daysAgo}d</p>
           </div>
         </button>
       </li>
