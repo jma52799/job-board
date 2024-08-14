@@ -1,6 +1,5 @@
 "use server";
 
-import { UserExperienceEssentials } from "@/lib/types";
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { signIn, signOut } from "@/lib/auth";
@@ -8,6 +7,7 @@ import bycrypt from "bcrypt";
 import { redirect } from "next/navigation";
 import { Job, Prisma } from "@prisma/client";
 import { auth } from "@/lib/auth";
+import { AuthError } from "next-auth";
 
 // --- user profile actions ---
 export async function saveExperience(experience: string) {
@@ -22,18 +22,18 @@ export async function saveExperience(experience: string) {
         const existingExperience = await prisma.userFile.findFirst({
             where: { userId },
         });
-    
+
         if (existingExperience) {
             await prisma.userFile.update({
                 where: { id: existingExperience.id },
-                data: { experience } ,
+                data: { experience },
             });
         } else {
             await prisma.userFile.create({
                 data: {
                     experience,
-                    userId,
-                }
+                    userId: userId, 
+                },
             });
         }
     } catch (error: any) {
@@ -43,18 +43,57 @@ export async function saveExperience(experience: string) {
     revalidatePath("/account", "page");
 }
 
+
+
+export async function fetchUserExperience(userId: string): Promise<string | null> {
+    const userFile = await prisma.userFile.findUnique({
+      where: { userId },
+      select: { experience: true },
+    });
+  
+    return userFile?.experience || null;
+  }
+  
+
 // --- user auth actions ---
-export async function logIn(formData: FormData) {
+export async function logIn(prevState: unknown, formData: unknown) { //was FormData
+    if (!(formData instanceof FormData)) {
+        return {
+            message: "Invalid form data",
+        }
+    }
     //sign in a user after logging in
     //This runs the 'Credentials authorize' function in auth.ts
-    await signIn('credentials', formData);
+    try {
+        await signIn('credentials', formData);
+    } catch (error) {
+        if (error instanceof AuthError) {
+            switch(error.type) {
+                case "CredentialsSignin":
+                    return {
+                        message: "Invalid credentials"
+                    }
+                default:
+                    return {
+                        message: "Could not sign in"
+                    }
+            }
+        }
+        throw error;
+    }
 }
 
 export async function logOut() {
     await signOut({redirectTo: '/'});
 }
 
-export async function signUp(formData: FormData) {
+export async function signUp(prevState: unknown, formData: unknown) {
+    if (!(formData instanceof FormData)) {
+        return {
+          message: "Invalid form data.",
+        };
+    }
+
     try {
         const hashedPassword = await bycrypt.hash(formData.get('password') as string, 10);
 
@@ -141,7 +180,7 @@ export async function fetchAuthenticatedUser() {
 }
 
 /* fetch jobs actions */
-export async function getJobs(searchQuery = '', page = 1, sortBy: "relevant" | "recent") {
+export async function getJobs(searchQuery = 'Engineer', page = 1, sortBy: "relevant" | "recent") {
     const whereClause = searchQuery ? {
         OR: [
         { title: { contains: searchQuery } },

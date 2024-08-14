@@ -3,7 +3,6 @@
 import {createContext, useCallback, useEffect, useState} from 'react';
 import { Job } from "@prisma/client";
 import {useSearchContext} from "@/lib/hooks";
-import { SortBy } from '@/lib/types';
 import { getJobs } from '@/actions/actions';
 
 type JobsContextProviderProps = {
@@ -30,7 +29,7 @@ export default function JobsContextProvider({
     children
 }: JobsContextProviderProps) {
     //state
-    const { searchQuery } = useSearchContext();
+    const { debouncedSearchQuery } = useSearchContext();
 
     const [jobs, setJobs] = useState([] as Job[]);
     const [totalCount, setTotalCount] = useState(0);
@@ -49,7 +48,7 @@ export default function JobsContextProvider({
     const fetchJobs = useCallback(async () => {
         setIsLoading(true);
         try {
-            const { jobs, totalCount } = await getJobs(searchQuery, page, sideSortBy);
+            const { jobs, totalCount } = await getJobs(debouncedSearchQuery, page, sideSortBy);
             setJobs(jobs);
             setTotalCount(totalCount);
         } catch (error) {
@@ -59,7 +58,7 @@ export default function JobsContextProvider({
         }
 
         //fetchJobs();
-    }, [searchQuery, page, sideSortBy]);
+    }, [debouncedSearchQuery, page, sideSortBy]);
 
     useEffect(() => {
         fetchJobs();

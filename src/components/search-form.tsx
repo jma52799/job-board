@@ -15,7 +15,7 @@ export default function SearchForm() {
 
   return (
     <form
-      className="flex items-center rounded-full"
+      className="flex items-center rounded-full p-4"
       onSubmit={handleOnSubmit}
     >
       <input 

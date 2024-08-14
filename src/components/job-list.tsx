@@ -17,7 +17,7 @@ export default function JobList({page}: JobListProps) {
   }, [page, handleChangePage]);
 
   return (
-    <ul className="flex flex-col items-center justify-center w-full h-[532px] overflow-y-scroll no-scrollbar">
+    <ul className={`flex flex-col w-full h-[532px] overflow-y-scroll no-scrollbar ${isLoading ? 'items-center justify-center' : 'items-start'}`}>
       {isLoading && <Spinner />}
       {!isLoading &&
         jobs?.map((job) => (
@@ -30,5 +30,4 @@ export default function JobList({page}: JobListProps) {
     </ul>
   )
 }
-
 

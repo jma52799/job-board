@@ -3,8 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea"
 import { useUserInfoContext } from "@/lib/hooks";
-import { UserExperienceEssentials } from "@/lib/types";
-import { UserFile } from "@prisma/client";
 import { useTransition } from "react";
 import { toast } from "sonner";
 

@@ -6,11 +6,12 @@ import { CiLocationOn } from "react-icons/ci";
 import { useJobsContext } from "@/lib/hooks";
 import { useState } from "react";
 import JobDetailsBookmark from "./jobDetails-bookmark";
-
+import { getLogoBgColorFromJobId } from "@/lib/utils";
 
 export default function JobItemContent() {
   const { selectedJob } = useJobsContext();
   const [isExpanded, setIsExpanded] = useState(false);
+  const logoBgColor = selectedJob && getLogoBgColorFromJobId(selectedJob.id);
 
   if (!selectedJob) {
     return (
@@ -25,7 +26,7 @@ export default function JobItemContent() {
   return (
     <div className="flex flex-col py-10 px-14 overflow-y-scroll overflow-x-hidden no-scrollbar">
         <div className="flex items-center space-x-4">
-          <div className="flex items-center justify-center h-[60px] w-[60px] bg-[#a1a1aa] rounded">{selectedJob.logo}</div>
+          <div className={`flex items-center justify-center h-[60px] w-[60px] text-white ${logoBgColor} rounded`}>{selectedJob.logo}</div>
           <div className="leading-6">
             <h1 className="text-2xl font-bold">{selectedJob.title}</h1>
             <p className="text-sm">Internet & Software</p>

@@ -12,7 +12,8 @@ import Container from "@/components/container";
 
 export default function Home(searchParams: { [key: string]: string | string[] | undefined }) {
 
-  const page = searchParams.page || 1;
+  //const page = searchParams.page || 1;
+  const page = searchParams.page ? parseInt(searchParams.page as string, 10) : 1;
 
   return (
     <main>

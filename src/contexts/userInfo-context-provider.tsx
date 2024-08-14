@@ -1,9 +1,8 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { UserFile } from "@prisma/client";
-import { UserExperienceEssentials } from "@/lib/types";
-import { saveExperience } from "@/actions/actions";
+import { fetchAuthenticatedUser, saveExperience, fetchUserExperience } from "@/actions/actions";
 
 type TUserInfoContext = {
     experience: UserFile['experience']
@@ -13,8 +12,23 @@ type TUserInfoContext = {
 
 export const UserInfoContext = createContext<TUserInfoContext | null>(null)
 
-export default function UserInfoContextProvider({children, data}: {children: React.ReactNode, data: UserFile[]}) {
-    const [experience, setExperience] = useState<UserFile['experience']>(data[0]?.experience || "")
+export default function UserInfoContextProvider({children}: {children: React.ReactNode}) {
+    const [experience, setExperience] = useState<UserFile['experience']>("")
+    const [userId, setUserId] = useState<string | null>(null);
+
+    // Fetch the user's experience when the component mounts or userId changes
+    useEffect(() => {
+    const fetchExperience = async () => {
+      const session = await fetchAuthenticatedUser();
+      if (session?.user?.id) {
+        setUserId(session.user.id);
+        const userExperience = await fetchUserExperience(session.user.id);
+        setExperience(userExperience || "");
+      }
+    };
+
+    fetchExperience();
+  }, [userId]);
 
     //event handlers
     const handleChangeExperience = (newExperience: UserFile['experience']) => {

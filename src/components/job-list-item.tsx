@@ -4,10 +4,12 @@ import { useJobsContext } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
 import { Job } from "@prisma/client";
 import BookmarkIcon from "./bookmark-icon";
+import { getLogoBgColorFromJobId } from "@/lib/utils";
 
 export default function JobListItem({job}: {job: Job}) {
   const { selectedJobId, handleChangeSelectedJobId } = useJobsContext();
   const isActive = selectedJobId === job.id;
+  const logoBgColor = getLogoBgColorFromJobId(job.id);
 
   return (
       <li className="w-full">
@@ -21,7 +23,7 @@ export default function JobListItem({job}: {job: Job}) {
             
           onClick={() => handleChangeSelectedJobId(job.id)}
         >
-          <div className="flex items-center justify-center h-[46px] w-[38px] bg-[#a1a1aa] ml-4 rounded">FT</div>
+          <div className={`flex items-center justify-center h-[46px] w-[38px] text-white ${logoBgColor} ml-4 rounded`}>{job.logo}</div>
           <div className="ml-4">
             <h4 className="text-sm font-semibold opacity-90">{job.company}</h4>
             <h3 className="text-md font-bold">{job.title}</h3>
