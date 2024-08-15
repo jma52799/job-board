@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Job Board Application
 
-## Getting Started
+This is a full-stack CRUD job board application built with Next.js. The project allows users to browse job listings, save jobs, and manage their own job experiences. The application uses a relational database to connect users with their bookmarks and user files, enabling personalized experiences.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **User Authentication**: Secure user login and sign-up with hashed passwords and allow users to delete their account.
+- **Job Listings**: Display of job listings with search functionality and filtering options such as relevance and recency.
+- **Bookmarking Jobs**: Users can toggle their job bookmarks on or off and manage the jobs they are interested in.
+- **User Experience Management**: Users can create, update, and delete their job experiences.
+- **CRUD Functionality**: Full support for Create, Read, Update, and Delete operations on user files (experience) and user's job bookmarks.
+- **Relational Database**: The application uses a relational database to link users with their bookmarks and user files, ensuring data consistency and integrity.
+- **Responsive Design**: The application is not yet optimize for various sizes (only desktop)
+- **Animated UI**: Uses Framer Motion for animations, including a unique job-hunt encouragement banner and active link effect, and Tailwind for suspense skeleton.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend**:
+  - Next.js
+  - React
+  - Tailwind
+  - Framer Motion
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Backend**:
+  - Next.js (for routing and server-side rendering)
+  - Prisma (ORM for database management)
+  - PostgreSQL (Database)
+  - NextAuth.js(Authentication)
 
-## Learn More
+- **Others**:
+  - TypeScript
+  - ESLint and Prettier for code linting and formatting
+  - Vercel for deployment
 
-To learn more about Next.js, take a look at the following resources:
+## Visit the application deployed on Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+ [Link to application](https://www.typescriptlang.org/)
