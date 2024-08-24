@@ -4,12 +4,22 @@ import { useJobsContext } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
 import { Job } from "@prisma/client";
 import BookmarkIcon from "./bookmark-icon";
-import { getLogoBgColorFromJobId } from "@/lib/utils";
+import { getLogoBgColorFromJobId, formatter } from "@/lib/utils";
+
 
 export default function JobListItem({job}: {job: Job}) {
   const { selectedJobId, handleChangeSelectedJobId } = useJobsContext();
   const isActive = selectedJobId === job.id;
   const logoBgColor = getLogoBgColorFromJobId(job.id);
+
+  const daysAgo = job.daysAgo;
+
+  let displayDaysAgo;
+  if (daysAgo > 7) {
+    displayDaysAgo = `${Math.floor(daysAgo / 7)}w`;
+  } else {
+    displayDaysAgo = `${daysAgo}d`; // if daysAgo is 7 or less, show the actual number of days
+  }
 
   return (
       <li className="w-full">
@@ -28,13 +38,13 @@ export default function JobListItem({job}: {job: Job}) {
             <h4 className="text-sm font-semibold opacity-90">{job.company}</h4>
             <h3 className="text-md font-bold">{job.title}</h3>
             <div className="flex gap-x-4">
-              <p className="text-xs opacity-50">{job.salary}</p>
+              <p className="text-xs opacity-50">{formatter.format(job.salary)}</p>
               <p className="text-xs opacity-50">{job.location}</p>
             </div>
           </div>
           <div className="ml-auto mr-4 flex flex-col gap-y-2">
               <BookmarkIcon jobId={job.id} />
-              <p className="text-xs">{job.daysAgo}d</p>
+              <p className="text-xs">{displayDaysAgo}</p>
           </div>
         </button>
       </li>

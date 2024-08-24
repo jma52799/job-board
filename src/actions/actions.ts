@@ -134,7 +134,9 @@ export async function destroyAccount() {
         })
     } catch (error: any) {
         throw new Error(error.message);
-    }
+    } finally {
+        await signOut({redirectTo: '/'});
+    } 
 }
 
 // --- bookmark actions ---
@@ -183,13 +185,15 @@ export async function fetchAuthenticatedUser() {
 export async function getJobs(searchQuery = 'Engineer', page = 1, sortBy: "relevant" | "recent") {
     const whereClause = searchQuery ? {
         OR: [
-        { title: { contains: searchQuery } },
-        { description: { contains: searchQuery } },
+            { title: { contains: searchQuery, mode: Prisma.QueryMode.insensitive } },
+            { company: { contains: searchQuery, mode: Prisma.QueryMode.insensitive } },
+            { description: { contains: searchQuery, mode: Prisma.QueryMode.insensitive } },
+            { skills: { has: searchQuery } }
         ]
     } : {};
 
     // Default order by created date (when sortBy equals 'relevant' but no search query is provided)
-    let orderByClause: any = { created: "desc" };
+    let orderByClause: any = { };
 
     // Sort by relevance if 'relevant' is the sortBy value and ONLY IF a search query is provided
     if (searchQuery && sortBy === "relevant") {
@@ -204,7 +208,7 @@ export async function getJobs(searchQuery = 'Engineer', page = 1, sortBy: "relev
 
     if (sortBy === "recent") {
         orderByClause = {
-        daysAgo: "desc",
+            daysAgo: "asc",
         }
     }
 

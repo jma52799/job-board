@@ -5,6 +5,13 @@ import { jobs } from "./script";
 const prisma = new PrismaClient();
 
 async function main() {
+  console.log("Deleting old data ...");
+
+  await prisma.bookmarked.deleteMany({});
+  await prisma.userFile.deleteMany({});
+  await prisma.user.deleteMany({});
+  await prisma.job.deleteMany({});
+
   console.log(`Start seeding ...`);
 
   for (const job of jobs) {

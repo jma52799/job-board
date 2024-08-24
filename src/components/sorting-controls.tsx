@@ -14,7 +14,7 @@ export default function SortingControls() {
         transition={{
           repeat: Infinity,
           ease: "linear",
-          duration: 40, 
+          duration: 30, 
         }}
         style={{ fontSize: "28px", letterSpacing: "0.2em", fontWeight: "bold" }}
       >

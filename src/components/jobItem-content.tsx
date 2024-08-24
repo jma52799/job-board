@@ -8,6 +8,7 @@ import { useState } from "react";
 import JobDetailsBookmark from "./jobDetails-bookmark";
 import { getLogoBgColorFromJobId } from "@/lib/utils";
 import { toast } from "sonner";
+import { formatter } from "@/lib/utils";
 
 export default function JobItemContent() {
   const { selectedJob } = useJobsContext();
@@ -24,12 +25,7 @@ export default function JobItemContent() {
     );
   }
 
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
+
 
   return (
     <div className="flex flex-col py-10 px-14 overflow-y-scroll overflow-x-hidden no-scrollbar">
