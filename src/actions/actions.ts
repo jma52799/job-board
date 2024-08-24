@@ -204,7 +204,7 @@ export async function getJobs(searchQuery = 'Engineer', page = 1, sortBy: "relev
 
     if (sortBy === "recent") {
         orderByClause = {
-        created: "desc",
+        daysAgo: "desc",
         }
     }
 

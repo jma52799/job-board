@@ -24,9 +24,15 @@ model Job {
   title       String
   company     String
   location    String
-  daysAgo     String
-  salary      String
+  daysAgo     Int
+  salary      Int
   description String
+  skills      String[]  
+  educations  String[]  
+  category    String    
+  type        String    // 'Full-time' or 'Part-time' or 'Internship' or 'Contract'
+  remote      String    // remote status (e.g., "remote" or "onsite")
+  deadline    DateTime  // Deadline to apply
   created     DateTime   @default(now())
   updated     DateTime   @updatedAt
   bookmarks   Bookmarked[]
