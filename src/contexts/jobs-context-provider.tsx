@@ -37,12 +37,10 @@ export default function JobsContextProvider({
     const [isLoading, setIsLoading] = useState(false);
     
     const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
-    //const [sortBy, setSortBy] = useState<SortBy[]>(["relevant"]);
     const [sideSortBy, setSideSortBy] = useState<"relevant" | "recent">("relevant");
 
     //derived state
     const selectedJob: Job | undefined = jobs?.find((job) => job.id === selectedJobId);
-    //const numberOfJobs = jobs?.length || 0;
 
     //event handler
     const fetchJobs = useCallback(async () => {
@@ -56,11 +54,9 @@ export default function JobsContextProvider({
         } finally {
             setIsLoading(false);
         }
-
-        //fetchJobs();
     }, [debouncedSearchQuery, page, sideSortBy]);
 
-    useEffect(() => {
+    useEffect(() => { //For initial render
         fetchJobs();
     }, [fetchJobs]); 
 
@@ -72,19 +68,8 @@ export default function JobsContextProvider({
         setSelectedJobId(id);
     },[]);
 
-    /*
-    const handleChangeSortBy = useCallback((value: SortBy) => {
-        const newSortBy = sortBy.includes(value)
-            ? sortBy.filter((item) => item !== value)
-            : [...sortBy, value];
-
-        setSortBy(newSortBy);
-    }, [sortBy]);
-    */
-
     const handleChangeSideSortBy = useCallback((value: "relevant" | "recent") => {
         setSideSortBy(value);
-        //handleChangeSortBy(value);
     }, []);
 
     return (

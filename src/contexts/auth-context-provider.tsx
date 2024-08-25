@@ -11,11 +11,6 @@ export default function AuthContextProvider({ children }: { children: React.Reac
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     //event handler
-    /*
-    handleIsLoggedInCheck = async () => {
-        setIsLoggedIn(true)
-    }
-    */
 
     return (
         <BookmarkContext.Provider value={{}}>

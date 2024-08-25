@@ -9,8 +9,8 @@ type JobListProps = {
   page: number;
 }
 
-export default function JobList({page}: JobListProps) {
-  const { jobs, totalCount, handleChangePage, isLoading } = useJobsContext();
+export default function JobList(/*{page}: JobListProps*/) {
+  const { jobs, page, handleChangePage, isLoading, handleChangeSelectedJobId } = useJobsContext();
 
   useEffect(() => {
     handleChangePage(page);
