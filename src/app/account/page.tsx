@@ -17,7 +17,7 @@ export default async function Account() {
   const experience = await prisma.userFile.findMany();
   
   return (
-    <UserInfoContextProvider data={experience}>
+    <UserInfoContextProvider>
         <main className="flex flex-col w-full items-center mt-16">
           <ResumeUpload />
           <div className="flex w-full gap-x-8 mt-8">
