@@ -2,23 +2,24 @@
 
 import {createContext, useCallback, useEffect, useState} from 'react';
 import { Job } from "@prisma/client";
-import {useSearchContext, useSearchQuery} from "@/lib/hooks";
-import { SortBy } from '@/lib/types';
+import {useSearchContext} from "@/lib/hooks";
+import { getJobs } from '@/actions/actions';
 
 type JobsContextProviderProps = {
     children: React.ReactNode;
 }
 
 type TJobsContext = {
+    page: number;
     jobs: Job[] | undefined;
     isLoading: boolean;
-    numberOfJobs: number;
+    totalCount: number;
     selectedJob: Job | undefined;
     selectedJobId: string | null;
-    sortBy: SortBy[];
     sideSortBy: "relevant" | "recent";
+    fetchJobs: () => Promise<void>;
+    handleChangePage: (newPage: number) => void;
     handleChangeSelectedJobId: (id: Job['id']) => void;
-    handleChangeSortBy: (value: SortBy) => void;
     handleChangeSideSortBy: (value: "relevant" | "recent") => void;
 }
 
@@ -29,45 +30,61 @@ export default function JobsContextProvider({
 }: JobsContextProviderProps) {
     //state
     const { debouncedSearchQuery } = useSearchContext();
-    const { jobs, isLoading } = useSearchQuery(debouncedSearchQuery);
+
+    const [jobs, setJobs] = useState([] as Job[]);
+    const [totalCount, setTotalCount] = useState(0);
+    const [page, setPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(false);
+    
     const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
-    const [sortBy, setSortBy] = useState<SortBy[]>(["relevant"]);
     const [sideSortBy, setSideSortBy] = useState<"relevant" | "recent">("relevant");
 
     //derived state
     const selectedJob: Job | undefined = jobs?.find((job) => job.id === selectedJobId);
-    const numberOfJobs = jobs?.length || 0;
 
     //event handler
+    const fetchJobs = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const { jobs, totalCount } = await getJobs(debouncedSearchQuery, page, sideSortBy);
+            setJobs(jobs);
+            setTotalCount(totalCount);
+        } catch (error) {
+            console.error('Failed to fetch jobs', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [debouncedSearchQuery, page, sideSortBy]);
+
+    useEffect(() => { //For initial render
+        fetchJobs();
+    }, [fetchJobs]); 
+
+    const handleChangePage = (newPage: number) => {
+        setPage(newPage);
+    }
+
     const handleChangeSelectedJobId = useCallback((id: Job['id']) => {
         setSelectedJobId(id);
     },[]);
 
-    const handleChangeSortBy = useCallback((value: SortBy) => {
-        const newSortBy = sortBy.includes(value)
-            ? sortBy.filter((item) => item !== value)
-            : [...sortBy, value];
-
-        setSortBy(newSortBy);
-    }, [sortBy]);
-
     const handleChangeSideSortBy = useCallback((value: "relevant" | "recent") => {
         setSideSortBy(value);
-        handleChangeSortBy(value);
-    }, [handleChangeSortBy]);
+    }, []);
 
     return (
         <JobsContext.Provider
             value={{
+                page,
                 jobs: jobs,
                 isLoading,
-                numberOfJobs,
+                totalCount,
                 selectedJob,
                 selectedJobId,
-                sortBy,
                 sideSortBy,
+                fetchJobs,
+                handleChangePage,
                 handleChangeSelectedJobId,
-                handleChangeSortBy,
                 handleChangeSideSortBy,
             }}
         >

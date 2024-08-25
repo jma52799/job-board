@@ -56,32 +56,7 @@ export function useUserInfoContext() {
 }
 
 //-----------Get Job Items-----------
-export async function fetchJobs(searchQuery: string) { //: Promise<Job[]>
-    const jobs = await prisma.job.findMany({
-        where: {
-            title: {
-                contains: searchQuery,
-            }
-        },
-    });
-    console.log("Fetched job", jobs);
-    return jobs;
-}
 
-export function useSearchQuery(searchQuery: string) {
-    const { data, isLoading } = useQuery({
-        queryKey: ["jobs", searchQuery], 
-        queryFn: () => fetchJobs(searchQuery),
-        refetchOnWindowFocus: false,
-        retry: false,
-        enabled: Boolean(searchQuery),
-    });
-
-    return {
-        jobs: data, 
-        isLoading,
-    }
-}
 
 //-----------Get Bookmark Items-----------
 export async function useBookmarkedJobItems() { 

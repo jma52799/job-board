@@ -1,167 +1,56 @@
 "use client";
 
-import { Bookmarked, Job } from "@prisma/client";
-import { createContext, useCallback, useMemo, useState, useEffect } from "react";
-import prisma from "@/lib/db";
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import { Job } from "@prisma/client";
+import { createContext, useEffect, useState } from "react";
+import { addBookmark, deleteBookmark, fetchAuthenticatedUser, fetchBookmarkedJobs } from "@/actions/actions";
 
 type TBookmarkContext = {
     bookmarkedIds: Job['id'][] | null;
-    //handleToggleBookmarkedIds: (id: Job['id']) => void;
-}
+    id: string | null;
+    handleToggleBookmarkedIds: (id: Job['id'], userId: string | null) => Promise<void>;
+};
 
 export const BookmarkContext = createContext<TBookmarkContext | null>(null);
 
 export default function BookmarkContextProvider({ children }: { children: React.ReactNode }) {
-    //state
-    const [bookmarkedIds, setBookmarkedIds] = useState<Job['id'][] | null>(null);
+    const [bookmarkedIds, setBookmarkedIds] = useState<Job['id'][]>([]);
+    const [id, setId] = useState<string | null>(null);
 
-
-    //event handler
-    /*
-    const handleToggleBookmarkedIds = async (id: Job['id']) => {
-        if (bookmarkedIds?.includes(id)) {
-            await fetch('/api/bookmarks/delete', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id }),
-            });
-            setBookmarkedIds(bookmarkedIds.filter((item) => item !== id));
-        } else {
-            await fetch('/api/bookmarks/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id }),
-            });
-            setBookmarkedIds([...(bookmarkedIds || []), id]);
-        }
-    }
-    */
-    
-    return (
-        <BookmarkContext.Provider
-            value={{
-                bookmarkedIds,
-                //handleToggleBookmarkedIds,
-            }}
-        >
-            {children}
-        </BookmarkContext.Provider>
-    );
-}
-
-
-/*
-    const [bookmarks, setBookmarks] = useState<Bookmarked[] | null>(null);
-
+    // Single useEffect to handle both user authentication and fetching bookmarks
     useEffect(() => {
-        const fetchBookmarks = async () => {
-            const session = await auth();
-            if (!session?.user) {
-                redirect("/login");
+        const fetchUserAndBookmarks = async () => {
+            const session = await fetchAuthenticatedUser();
+            if (session) {
+                setId(session.user.id);
+                const jobs = await fetchBookmarkedJobs(session.user.id);
+                setBookmarkedIds(jobs.map(job => job.id));
             } else {
-                const userBookmarks = await prisma.bookmarked.findMany({
-                    where: {
-                        userId: session.user.id,
-                    }
-                });
-                setBookmarks(userBookmarks);
+                setId(null);
+                setBookmarkedIds([]); // Clear bookmarks if not logged in
             }
         };
 
-        fetchBookmarks();
-    }, []);
+        fetchUserAndBookmarks();
+    }, [id]); 
 
-    const handleToggleBookmarkedIds = async (id: Job['id']) => {
-        const session = await auth();
-        if (!session?.user) {
-            return null;
-        }
+    const handleToggleBookmarkedIds = async (id: Job['id'], userId: string | null) => {
+        if (!userId) return;
 
-        const existingBookmark = bookmarks?.find((bookmark) => bookmark.jobId === id);
-
-        if (existingBookmark) {
-            await prisma.bookmarked.deleteMany({
-                where: {
-                    jobId: id,
-                    userId: session.user.id,
-                }
-            });
-        } else {
-            await prisma.bookmarked.create({
-                data: {
-                    jobId: id,
-                    userId: session.user.id,
-                }
-            });
-        }
-
-        // Fetch the updated bookmarks
-        const updatedBookmarks = await prisma.bookmarked.findMany({
-            where: {
-                userId: session.user.id,
-            }
-        });
-        setBookmarks(updatedBookmarks);
-    }
-    */
-
-    /*
-    How can I modify the bookmark-context-provider to align with the prisma schema? And I want to replace the API calls with 'prisma.<model>.deleteMany' and 'prisma.<model>.findMany' to delete or add bookmark associated to a single user. And if the user hasn't signed in yet, then th
-
-bookmark-context-provider:
-"use client";
-
-import { Bookmarked, Job } from "@prisma/client";
-import { createContext, useCallback, useMemo, useState, useEffect } from "react";
-import prisma from "@/lib/db";
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
-
-type TBookmarkContext = {
-    bookmarkedIds: Job['id'][] | null;
-    handleToggleBookmarkedIds: (id: Job['id']) => void;
-}
-
-export const BookmarkContext = createContext<TBookmarkContext | null>(null);
-
-export default function BookmarkContextProvider({ children }: { children: React.ReactNode }) {
-    //state
-    const [bookmarkedIds, setBookmarkedIds] = useState<Job['id'][] | null>(null);
-
-
-    //event handler
-    const handleToggleBookmarkedIds = async (id: Job['id']) => {
         if (bookmarkedIds?.includes(id)) {
-            await fetch('/api/bookmarks/delete', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id }),
-            });
             setBookmarkedIds(bookmarkedIds.filter((item) => item !== id));
+            await deleteBookmark(id, userId);
+            console.log("deleted bookmark");
         } else {
-            await fetch('/api/bookmarks/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id }),
-            });
             setBookmarkedIds([...(bookmarkedIds || []), id]);
+            await addBookmark(id, userId);
         }
-    }
-    
+    };
+
     return (
         <BookmarkContext.Provider
             value={{
                 bookmarkedIds,
+                id,
                 handleToggleBookmarkedIds,
             }}
         >
@@ -169,4 +58,3 @@ export default function BookmarkContextProvider({ children }: { children: React.
         </BookmarkContext.Provider>
     );
 }
-    */

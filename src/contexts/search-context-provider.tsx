@@ -3,7 +3,9 @@
 import {createContext, useState} from 'react';
 import { useDebounce }  from "@uidotdev/usehooks";
 
+
 type TSearchContext = {
+    searchQuery: string;
     debouncedSearchQuery: string;
     handleChangeSearchQuery: (newValue: string) => void;
 };
@@ -11,14 +13,15 @@ type TSearchContext = {
 export const SearchContext = createContext<TSearchContext | null>(null);
 export default function SearchContextProvider({children}: {children: React.ReactNode}) {
     const [searchQuery, setSearchQuery] = useState('');
-    const debouncedSearchQuery = useDebounce(searchQuery, 0);
+    const debouncedSearchQuery = useDebounce(searchQuery, 250);
+    //const { handleChangePage } = useJobsContext();
 
     const handleChangeSearchQuery = (newValue: string) => {
         setSearchQuery(newValue);
     };
 
     return (
-        <SearchContext.Provider value={{debouncedSearchQuery, handleChangeSearchQuery}}>
+        <SearchContext.Provider value={{searchQuery, debouncedSearchQuery, handleChangeSearchQuery}}>
             {children}
         </SearchContext.Provider>
     )

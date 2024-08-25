@@ -1,35 +1,60 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
+import { jobs } from "./script";
 
 const prisma = new PrismaClient();
 
 async function main() {
+  console.log("Deleting old data ...");
+
+  await prisma.bookmarked.deleteMany({});
+  await prisma.userFile.deleteMany({});
+  await prisma.user.deleteMany({});
+  await prisma.job.deleteMany({});
+
   console.log(`Start seeding ...`);
 
-  // Create jobs first
+  for (const job of jobs) {
+    await prisma.job.create({
+      data: job,
+    });
+  }
+
   const job1 = await prisma.job.create({
     data: {
-      applyUrl: "https://amazon.com/apply/1",
+      applyUrl: "",
+      logo: "A",
       title: "Frontend Developer",
       company: "Amazon",
-      city: "Irvine",
-      state: "CA",
-      country: "US",
-      deadline: new Date("2024-03-01T00:00:00.000Z"),
-      daysAgo: "4",
+      location: "Irvine, CA",
+      daysAgo: 4,
+      salary: 160000,
+      description: "Software engineer",
+      skills: ["React", "Next.js", "TypeScript", "GraphQL"],
+      educations: ["Bachelor", "Computer Science"],
+      category: "Internet & Software",
+      type: 'Full-Time',
+      deadline: new Date("2024-12-12"),
+      remote: "Remote",
     },
   });
 
   const job2 = await prisma.job.create({
     data: {
-      applyUrl: "https://amazon.com/apply/2",
+      applyUrl: "",
+      logo: "B",
       title: "AI/ML Engineer",
-      company: "Amazon",
-      city: "Irvine",
-      state: "CA",
-      country: "US",
-      deadline: new Date("2024-03-01T00:00:00.000Z"),
-      daysAgo: "4",
+      company: "Boeing",
+      location: "Sacramento, CA",
+      daysAgo: 4,
+      salary: 170000,
+      description: "AI/ML engineer",
+      skills: ["Python", "Machine Learning", "Deep Learning"],
+      educations: ["Bachelor", "Artificial Intelligence"],
+      category: "Engineering",
+      type: 'Part-Time',
+      deadline: new Date("2024-11-15"),
+      remote: "Onsite",
     },
   });
 

@@ -1,26 +1,65 @@
 "use client"
 
+import { useState, useEffect } from "react";
 import { Job } from "@prisma/client";
 import { BookmarkFilledIcon } from "@radix-ui/react-icons";
 import { useBookmarkContext } from "@/lib/hooks";
+import AuthDialog from "./auth-dialog";
+import { fetchAuthenticatedUser } from "@/actions/actions";
 
-export default function BookmarkIcon({ jobId }: { jobId: Job['id'] | any }) {
-    //const { bookmarkedIds, handleToggleBookmarkedIds } = useBookmarkContext();
-    const { bookmarkedIds } = useBookmarkContext();
+export default function BookmarkIcon({ jobId }: { jobId: Job['id'] }) {
+    const { bookmarkedIds, handleToggleBookmarkedIds } = useBookmarkContext();
+    const [showAuthDialog, setShowAuthDialog] = useState(false);
+    const [isLogin, setIsLogin] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [userId, setUserId] = useState<string | null>(null);
+
+    const fetchUser = async () => {
+        const session = await fetchAuthenticatedUser();
+        if (session) {
+            setLoggedIn(true);
+            setUserId(session.user.id);
+            setShowAuthDialog(false);
+        } else {
+            setLoggedIn(false);
+            setUserId(null);
+        }
+    };
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
+    const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!loggedIn) {
+            setShowAuthDialog(true);
+            setIsLogin(false); // Show sign-up dialog by default
+        } else {
+            await handleToggleBookmarkedIds(jobId, userId);
+        }
+    };
+
+    const closeAuthDialog = () => {
+        setShowAuthDialog(false);
+    };
+
+    const toggleDialog = () => {
+        setIsLogin(!isLogin);
+    };
 
     return (
-
-            <button 
-                onClick={(e) => {
-                    //handleToggleBookmarkedIds(jobId);
-                    e.preventDefault();
-                    e.stopPropagation();
-                }}
-            >
+        <div>
+            <button onClick={handleClick}>
                 <BookmarkFilledIcon 
-                    className={bookmarkedIds?.includes(jobId) ? "filled" : ""}
+                    className={`${bookmarkedIds?.includes(jobId) ? "fill-current text-black" : "text-transparent stroke-black"}`}
                 />
             </button>
-
-    )
+            {showAuthDialog && 
+                <AuthDialog closeDialog={closeAuthDialog} isLogin={isLogin} toggleDialog={toggleDialog} />
+            }
+        </div>
+    );
 }

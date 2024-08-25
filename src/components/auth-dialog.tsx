@@ -1,8 +1,15 @@
-import { Button } from '@/components/ui/button';
+/*
+Problem: The error message for log in and sign up does not disapper when swiching between log in and sign up
+Reason: The component does not rerender when switching between log in and sign up
+*/
+
+"use client";
+
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { logIn, signUp } from "@/actions/actions";
 import AuthDialogBtn from './auth-dialog-btn';
+import { useFormState } from "react-dom";
 
 type AuthDialogProps = {
   closeDialog: () => void
@@ -11,6 +18,8 @@ type AuthDialogProps = {
 }
 
 export default function AuthDialog({ closeDialog, isLogin, toggleDialog }: AuthDialogProps) {  
+  const [signUpError, dispatchSignUp] = useFormState(signUp, undefined);
+  const [logInError, dispatchLogIn] = useFormState(logIn, undefined);
   
   return (
     <div 
@@ -20,7 +29,7 @@ export default function AuthDialog({ closeDialog, isLogin, toggleDialog }: AuthD
       <form 
         className="relative bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the dialog
-        action={isLogin ?  logIn :  signUp} 
+        action={isLogin ?  dispatchLogIn :  dispatchSignUp} 
       >
         <button
           className="absolute top-0 right-0 m-4 text-gray-600 hover:text-gray-900"
@@ -36,11 +45,11 @@ export default function AuthDialog({ closeDialog, isLogin, toggleDialog }: AuthD
           <div className="mb-6">
             <div className="mb-4">
               <Label htmlFor="email">Email</Label>
-              <Input type="email" name="email" id="email" placeholder="m@example.com" />
+              <Input type="email" name="email" id="email" placeholder="m@example.com" required maxLength={100} />
             </div>
             <div className="mb-6">
               <Label htmlFor="password">Password</Label>
-              <Input type="password" name='password' id="password" />
+              <Input type="password" name='password' id="password" required maxLength={100}/>
             </div>
 
             <AuthDialogBtn isLogin={isLogin} />
@@ -60,6 +69,13 @@ export default function AuthDialog({ closeDialog, isLogin, toggleDialog }: AuthD
             </button>
           </p>
         </div>
+
+        {signUpError && (
+          <p className="text-red-500 text-sm mt-2">{signUpError.message}</p>
+        )}
+        {logInError && (
+          <p className="text-red-500 text-sm mt-2">{logInError.message}</p>
+        )}
       </form>
     </div>
   );

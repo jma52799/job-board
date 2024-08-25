@@ -1,43 +1,28 @@
 "use client";
 
-import { useState } from "react";
-import { CiLocationOn } from "react-icons/ci";
-import { RiArrowDropDownLine } from "react-icons/ri";
+import { motion } from "framer-motion";
 
-const buttons = [
-    "Full-time Job",
-    "Part-time",
-    "Internship",
-]
 export default function SortingControls() {
-    return (
-        <div className="flex space-x-4 mr-2">
-            <SortingButton>
-                <CiLocationOn className="text-black"/>
-                Location
-            </SortingButton>
-            <SortingButton>
-                Onsite/Remote
-                <RiArrowDropDownLine />
-            </SortingButton>
-            {
-                buttons.map((button) => (
-                    <SortingButton key={button}>{button}</SortingButton>
-                ))
-            }
-        </div>
-    )
-  }
 
-  export function SortingButton({children}: {children: React.ReactNode}) {
-    const [isClicked, setIsClicked] = useState(false);
+  return (
+    <div className="relative flex-grow bg-black h-full overflow-hidden rounded-full flex items-center border-l-4 border-black">
+      <motion.div
+        className="whitespace-nowrap text-white italic"
+        initial={{ x: "100%" }}
+        animate={{ x: "-100%" }}
+        transition={{
+          repeat: Infinity,
+          ease: "linear",
+          duration: 30, 
+        }}
+        style={{ fontSize: "28px", letterSpacing: "0.2em", fontWeight: "bold" }}
+      >
+        Good luck on your job hunt! &nbsp;
+        Good luck on your job hunt! &nbsp;
+      </motion.div>
+    </div>
+  );
+  
+}
 
-    return (
-        <button 
-            className={`flex items-center gap-x-1 px-3 py-1 border border-black/30 rounded-full ${isClicked ? "ring-blue-500 ring-2" : ""}`}
-            onClick={() => setIsClicked(!isClicked)}
-        >
-            {children}
-        </button>
-    )
-  }
+

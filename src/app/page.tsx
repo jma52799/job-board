@@ -10,7 +10,10 @@ import PaginationControls from "@/components/pagination-controls";
 import JobItemContent from "@/components/jobItem-content";
 import Container from "@/components/container";
 
-export default function Home() {
+export default function Home(searchParams: { [key: string]: string | string[] | undefined }) {
+
+  //const page = searchParams.page ? parseInt(searchParams.page as string, 10) : 1;
+
   return (
     <main>
       <div className="flex flex-col w-full mt-16">

@@ -9,12 +9,6 @@ import JobsContextProvider from "@/contexts/jobs-context-provider";
 import BookmarkContextProvider from "@/contexts/bookmark-context-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Providers from "./providers";
-import prisma from "@/lib/db";
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { checkAuth } from "@/lib/server-utils";
-import { SessionProvider } from "next-auth/react";
-import  getServerSession   from 'next-auth'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,20 +21,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  /*
-  const session = await auth();
-  if (!session?.user) {
-    redirect("/login");
-    return null;
-  }
-  const bookmarks = await prisma.bookmarked.findMany({
-    where: {
-      userId: session.user.id,
-    }
-  });
-  */
-
-  //const session = await getServerSession()
 
   return (
     <html lang="en">
@@ -48,7 +28,6 @@ export default async function RootLayout({
         <Background />
         <div className="flex flex-col max-w-[1050px] mx-auto px-4 min-h-screen">
           <Header />
-            <SessionProvider >
               <Providers>
                 <SearchContextProvider>
                   <JobsContextProvider>
@@ -56,7 +35,6 @@ export default async function RootLayout({
                   </JobsContextProvider>   
                 </SearchContextProvider>
               </Providers>
-            </SessionProvider>
           <Footer />
         </div>
 

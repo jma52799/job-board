@@ -1,5 +1,8 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { toast } from "sonner";
 
 export default function ResumeUpload() {
     return (
@@ -8,7 +11,12 @@ export default function ResumeUpload() {
             <div className="ml-8 space-y-4">
                 <h3 className="text-2xl text-black/70">Build your Profile Faster</h3>
                 <p className="text-lg">Upload your resume so companies can find you (Accept PDF, DOC, DOCX)</p>
-                <Button className="rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-800" variant="secondary">Upload a Resume</Button>
+                <Button 
+                    className="rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-800" variant="secondary"
+                    onClick={() => { toast.error('Sorry! This function is not yet available') }}
+                >
+                    Upload a Resume
+                </Button>
             </div>
         </div>
     )
