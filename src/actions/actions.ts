@@ -4,7 +4,6 @@ import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { signIn, signOut } from "@/lib/auth";
 import bycrypt from "bcrypt";
-import { redirect } from "next/navigation";
 import { Job, Prisma } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { AuthError } from "next-auth";

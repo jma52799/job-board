@@ -6,12 +6,11 @@ import { useJobsContext } from "@/lib/hooks";
 
 export default function SearchForm() {
   const { searchQuery, handleChangeSearchQuery } = useSearchContext();
-  const { fetchJobs, handleChangePage } = useJobsContext();
+  const { handleChangePage } = useJobsContext();
 
   const handleOnSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleChangePage(1); //This will trigger a new fetch
-    //fetchJobs();
   }
 
   return (

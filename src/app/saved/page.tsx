@@ -4,7 +4,6 @@ import BookmarkedJobsList from "@/components/bookmarkedJobs-list";
 import prisma from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { toast } from "sonner";
 
 export default async function Saved() {
     

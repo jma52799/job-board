@@ -7,6 +7,7 @@ import { addBookmark, deleteBookmark, fetchAuthenticatedUser, fetchBookmarkedJob
 type TBookmarkContext = {
     bookmarkedIds: Job['id'][] | null;
     id: string | null;
+    resetBookmarks: () => void;
     handleToggleBookmarkedIds: (id: Job['id'], userId: string | null) => Promise<void>;
 };
 
@@ -16,8 +17,9 @@ export default function BookmarkContextProvider({ children }: { children: React.
     const [bookmarkedIds, setBookmarkedIds] = useState<Job['id'][]>([]);
     const [id, setId] = useState<string | null>(null);
 
-    // Single useEffect to handle both user authentication and fetching bookmarks
-    useEffect(() => {
+
+    // Fetch bookmark on initial render if user already logged in
+    /*useEffect(() => {
         const fetchUserAndBookmarks = async () => {
             const session = await fetchAuthenticatedUser();
             if (session) {
@@ -31,7 +33,12 @@ export default function BookmarkContextProvider({ children }: { children: React.
         };
 
         fetchUserAndBookmarks();
-    }, [id]); 
+    }, []); */
+
+    //event handler
+    const resetBookmarks = () => {
+        setBookmarkedIds([]);
+    };
 
     const handleToggleBookmarkedIds = async (id: Job['id'], userId: string | null) => {
         if (!userId) return;
@@ -51,6 +58,7 @@ export default function BookmarkContextProvider({ children }: { children: React.
             value={{
                 bookmarkedIds,
                 id,
+                resetBookmarks,
                 handleToggleBookmarkedIds,
             }}
         >

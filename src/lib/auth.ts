@@ -32,6 +32,7 @@ export const config = {
         })
     ],
     callbacks: {
+        /*
         //logic for whether to allow user through (logged in) or not (not logged in)
         authorized: ({ auth, request }) => {
             const isLoggedIn = Boolean(auth?.user);
@@ -52,7 +53,7 @@ export const config = {
             } 
 
             return false;
-        },
+        },*/
         jwt: ({ token, user }) => {
             if (user) {
                 token.userId = user.id;

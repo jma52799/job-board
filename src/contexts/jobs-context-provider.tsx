@@ -30,12 +30,10 @@ export default function JobsContextProvider({
 }: JobsContextProviderProps) {
     //state
     const { debouncedSearchQuery } = useSearchContext();
-
     const [jobs, setJobs] = useState([] as Job[]);
     const [totalCount, setTotalCount] = useState(0);
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
-    
     const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
     const [sideSortBy, setSideSortBy] = useState<"relevant" | "recent">("relevant");
 
@@ -56,9 +54,9 @@ export default function JobsContextProvider({
         }
     }, [debouncedSearchQuery, page, sideSortBy]);
 
-    useEffect(() => { //For initial render
+    useEffect(() => { 
         fetchJobs();
-    }, [fetchJobs]); 
+    }, [fetchJobs]);
 
     const handleChangePage = (newPage: number) => {
         setPage(newPage);

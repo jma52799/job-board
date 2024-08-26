@@ -3,13 +3,16 @@
 import { logOut, destroyAccount } from "@/actions/actions";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useBookmarkContext } from "@/lib/hooks";
 
 export default function LoggingControls() {
     const [isPending, setIsPending] = useState(false);
+    const { resetBookmarks } = useBookmarkContext();
 
     const handleLogOut = async () => {
         setIsPending(true);
         try {
+            resetBookmarks();
             await logOut();
         } finally {
             setIsPending(false);
@@ -19,6 +22,7 @@ export default function LoggingControls() {
     const handleDestroyAccount = async () => {
         setIsPending(true);
         try {
+            resetBookmarks();
             await destroyAccount();
         } finally {
             setIsPending(false);

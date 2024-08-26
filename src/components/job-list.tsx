@@ -9,12 +9,8 @@ type JobListProps = {
   page: number;
 }
 
-export default function JobList(/*{page}: JobListProps*/) {
-  const { jobs, page, handleChangePage, isLoading, handleChangeSelectedJobId } = useJobsContext();
-
-  useEffect(() => {
-    handleChangePage(page);
-  }, [page, handleChangePage]);
+export default function JobList() {
+  const { jobs, isLoading } = useJobsContext();
 
   return (
     <ul className={`flex flex-col w-full h-[532px] overflow-y-scroll no-scrollbar ${isLoading ? 'items-center justify-center' : 'items-start'}`}>
