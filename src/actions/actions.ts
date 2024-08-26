@@ -2,10 +2,10 @@
 
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { signIn, signOut } from "@/lib/auth";
+import { signIn, signOut } from "@/lib/auth-no-edge";
 import bycrypt from "bcrypt";
 import { Job, Prisma } from "@prisma/client";
-import { auth } from "@/lib/auth";
+import { auth } from "@/lib/auth-no-edge";
 import { AuthError } from "next-auth";
 
 // --- user profile actions ---

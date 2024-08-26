@@ -4,7 +4,7 @@ import LoggingControls from "@/components/logging-controls";
 import UserExperience from "@/components/user-experience";
 import UserInfoContextProvider from "@/contexts/userInfo-context-provider";
 import prisma from "@/lib/db";
-import { auth } from "@/lib/auth";
+import { auth } from "@/lib/auth-no-edge";
 import { redirect } from "next/navigation";
 
 

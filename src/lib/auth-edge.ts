@@ -1,36 +1,9 @@
-import NextAuth, { NextAuthConfig } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import prisma from "@/lib/db";
-import bycrypt from "bcryptjs";
+import { NextAuthConfig } from "next-auth";
 
-
-export const config = {
+export const nextAuthEdgeConfig = {
     pages: {
         signIn: "/login",
     },
-    providers: [
-        Credentials({
-            //authorize user based on the credentials they typed in (email & password)
-            async authorize(credentials) {
-                //runs on login
-                const { email, password } = credentials as { email: string, password: string };
-                const user = await prisma.user.findUnique({ where: { email } });
-                if (!user) {
-                    console.log("No user with that email");
-                    return null;
-                }
-
-                const isCorrect = await bycrypt.compare(password, user.hashedPassword);
-                if (!isCorrect) {
-                    console.log("Incorrect password");
-                    return null;
-                }
-                
-
-                return user;
-            }
-        })
-    ],
     callbacks: {
         /*
         //logic for whether to allow user through (logged in) or not (not logged in)
@@ -68,9 +41,6 @@ export const config = {
 
             return session;
         }
-    }
+    },
+    providers: [],
 } satisfies NextAuthConfig;
-
-export const { auth, signIn, signOut, handlers: {GET, POST}} = NextAuth(config);
-
-

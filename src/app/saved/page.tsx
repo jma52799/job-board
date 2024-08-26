@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Loading from "../loading";
 import BookmarkedJobsList from "@/components/bookmarkedJobs-list";
 import prisma from "@/lib/db";
-import { auth } from "@/lib/auth";
+import { auth } from "@/lib/auth-no-edge";
 import { redirect } from "next/navigation";
 
 export default async function Saved() {

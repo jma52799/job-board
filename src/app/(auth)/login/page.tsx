@@ -2,7 +2,7 @@ import AuthForm from "@/components/auth-form";
 import Container from "@/components/container";
 import Link from "next/link";
 import Image from 'next/image'
-import { auth } from "@/lib/auth";
+import { auth } from "@/lib/auth-no-edge";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
