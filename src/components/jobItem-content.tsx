@@ -105,14 +105,14 @@ export default function JobItemContent() {
         <div className="mt-4 border-t border-solid border-black/15" />
 
         <p className={`mt-4 w-[566px] ${!isExpanded ? "line-clamp-3" : ""}`}>
-          ISAFE Enterprises is seeking a skilled and innovative Machine Learning Engineer to join our dynamic team. 
-          The ideal candidate will be responsible for developing and deploying a website chatbot that enhances customer support 
-          and facilitates document signing. Additionally, the candidate will integrate artificial intelligence tools into the 
-          ISAFE Direct Platform to assist administrators in creating and disseminating online digital forms.
-          grate artificial intelligence tools into the 
-          ISAFE Direct Platform to assist administrators in creating and disseminating online digital forms.
-          grate artificial intelligence tools into the 
-          ISAFE Direct Platform to assist administrators in creating and disseminating online digital forms.
+          {selectedJob.company} is looking for a talented and motivated {selectedJob.title} to join our forward-thinking team. 
+In this role, you will be responsible for driving key projects that contribute to the success of the company. 
+You will collaborate with cross-functional teams to develop and implement solutions that improve business processes 
+and enhance customer experiences. Your expertise will play a crucial role in advancing the mission and delivering 
+high-quality results that make a difference.
+          <br />
+          Join us and contribute to the ongoing innovation at {selectedJob.company} as we continue to push the boundaries 
+in our industry and provide exceptional value to our clients and customers.
         </p>
         <button 
           className="self-start text-blue-700 mt-2"
