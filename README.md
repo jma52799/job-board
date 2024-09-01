@@ -34,4 +34,4 @@ This is a full-stack CRUD job board application built with Next.js. The project 
 
 ## Visit the application deployed on Vercel
 
- [Link to application](https://www.typescriptlang.org/)
+ [Link to application](https://job-board-nine-nu.vercel.app)
